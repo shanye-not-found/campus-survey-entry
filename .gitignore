@@ -1,0 +1,6 @@
+node_modules/
+.runtime/
+test-results/
+playwright-report/
+local.config.json
+*.log

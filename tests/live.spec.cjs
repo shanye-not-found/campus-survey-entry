@@ -1,0 +1,20 @@
+const { test, expect } = require("@playwright/test");
+test("已发布的固定入口读取 GitHub 实际记录并打开本机审阅", async ({ page, context }) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("./");
+  await expect(page.getByRole("heading", { name: "校园拾光 · 审阅入口" })).toBeVisible();
+  const link = page.getByRole("link", { name: "进入审阅" }).first();
+  await expect(link).toBeVisible({ timeout: 20000 });
+  const url = await link.getAttribute("href");
+  expect(url).toMatch(/^http:\/\/10\.\d+\.\d+\.\d+:5173\/review$/);
+  await page.getByRole("button", { name: "刷新地址" }).click();
+  await expect(link).toHaveAttribute("href", url);
+  await page.screenshot({ path: "test-results/live-entry-desktop.png", fullPage: true });
+  const popupPromise = context.waitForEvent("page");
+  await link.click();
+  const popup = await popupPromise;
+  await popup.waitForURL(url);
+  await expect(popup.getByRole("heading", { name: /看见每一份校园记录/ })).toBeVisible();
+  expect(errors).toEqual([]);
+});
