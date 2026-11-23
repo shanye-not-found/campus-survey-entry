@@ -1,8 +1,11 @@
 {
     "schema_version":  1,
-    "state":  "stopped",
-    "updated_at":  "2026-11-23T10:46:24.8622892Z",
+    "state":  "started",
+    "updated_at":  "2026-11-23T10:46:49.3948569Z",
     "addresses":  [
-
+                      {
+                          "label":  "WLAN",
+                          "url":  "http://10.30.28.100:5173"
+                      }
                   ]
 }
